@@ -24,7 +24,7 @@ export default class LendingsMain extends Component {
   };
 
   render() {
-    const { dadosLendings, dadosUsers } = this.state;
+    const { dadosUsers } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>

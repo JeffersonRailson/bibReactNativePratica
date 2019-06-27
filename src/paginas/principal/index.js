@@ -1,120 +1,103 @@
 import React, { Component } from "react";
+
 import {
-  StyleSheet,
-  Text,
   View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
   TextInput,
-  Button,
-  ScrollView
+  Image
 } from "react-native";
 import api from "../../service/api";
 import User from "../../componentes/User";
+const logo = require("../../assets/img/ifma.png");
 
-export default class App extends Component {
+export default class Home extends Component {
   state = {
     data: [],
-    user: "",
-    noLogged: true
+    search: null,
+    type: null,
+    teste: false
   };
 
-  login = async () => {
-    const res = await api.get(`/users/${this.state.user}`);
+  search = async search => {
+    const res = await api.get(`/${search}/${this.state.search}`);
     this.setState({ data: res.data });
-    this.setState({ noLogged: false });
-    this.setState({ user: "" });
+    this.setState({ search: "" });
+    this.setState({ teste: true });
   };
-  logoff = () => {
-    this.setState({ user: "" });
-    this.setState({ data: [] });
-    this.setState({ noLogged: true });
-  };
-  render() {
-    const { data } = this.state;
-    return (
-      <ScrollView style={styles.conteinerScroll}>
-        <View style={styles.container}>
-          <Text
-            style={{
-              fontSize: 25,
-              textAlign: "center",
-              margin: 15,
-              color: "red"
-            }}
-          >
-            awdawdawd
-          </Text>
-          {this.state.noLogged && (
-            <View>
-              <TextInput
-                style={styles.containerForm}
-                placeholder="Informe o usuário (id)"
-                autoCapitalize="none"
-                onChangeText={text => {
-                  this.setState({ user: text });
-                }}
-              />
-            </View>
-          )}
 
-          <View style={styles.containerButton}>
-            {this.state.noLogged && (
-              <Button title="logar" onPress={this.login} />
+  render() {
+    const { data, teste } = this.state;
+    return (
+      <View style={styles.container}>
+        <Image style={{ width: 70, height: 70, margin: 15 }} source={logo} />
+        <TextInput
+          style={styles.input}
+          autoCorrect={false}
+          autoCapitalize="none"
+          placeholder="Digite os termos da Pesquisa"
+          placeholderTextColor="#999"
+          onChangeText={description => this.setState({ search: description })}
+        />
+        <TouchableOpacity
+          style={styles.searchButton}
+          onPress={() => this.search("users")}
+        >
+          <Text style={styles.searchButtonText}>Buscar</Text>
+        </TouchableOpacity>
+        <View style={styles.component}>
+          <TouchableOpacity>
+            {teste && (
+              <User
+                nome={data.name}
+                tipo={data.type ? "Leitor" : "funcionario"}
+              />
             )}
-            {!this.state.noLogged && (
-              <Button title="Sair" onPress={this.logoff} />
-            )}
-          </View>
-          {!this.state.noLogged && (
-            <User
-              nome={data.name}
-              tipo={data.type ? "Leitor" : "funcionario"}
-            />
-          )}
+          </TouchableOpacity>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  conteinerScroll: {
-    flex: 1,
-    backgroundColor: "#b0c4de"
-  },
   container: {
     flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-    backgroundColor: "#b0c4de"
+    backgroundColor: "#F8F8FF",
+    paddingHorizontal: 20,
+    paddingTop: 30
   },
-
-  containerRepo: {
+  input: {
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    padding: 15,
+    marginTop: 10,
+    fontSize: 16
+  },
+  searchButton: {
+    backgroundColor: "#00FF7F",
+    borderRadius: 4,
+    height: 42,
+    marginTop: 15,
     justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "black",
-    margin: 20
+    alignItems: "center"
   },
-
-  containerForm: {
-    width: 300,
-    padding: 5,
-    backgroundColor: "white"
+  searchButtonText: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#FFF"
   },
-
-  containerButton: {
-    margin: 15
+  logo: {
+    height: 128,
+    width: 138,
+    resizeMode: "center"
   },
-
-  text: {
-    fontSize: 15,
-    textAlign: "center",
-    margin: 5,
-    color: "orange",
-    fontWeight: "bold"
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
+  component: {
+    marginTop: 50,
+    flex: 1,
+    backgroundColor: "white",
+    borderRadius: 10
   }
 });
