@@ -2,15 +2,17 @@ import React, { Component } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
+import User from "./User";
+
 // import { Container } from './styles';
 
-export default function Lending({ nome, tipo }) {
+export default function Lending({ Exemplar, DataEntrega, DataPrevistaEntrega }) {
   return (
     <View style={styles.conteiner}>
       <View>
-        <Text style={styles.textNome}>{nome}</Text>
-
-        <Text style={styles.textEmail}>{tipo}</Text>
+        <Text style={styles.textNome}>{Exemplar}</Text>
+        <Text style={styles.textNome}>{DataEntrega}</Text>
+        <Text style={styles.textNome}>{DataPrevistaEntrega}</Text>
       </View>
       <Icon style={styles.icons} name="angle-right" size={20} />
     </View>

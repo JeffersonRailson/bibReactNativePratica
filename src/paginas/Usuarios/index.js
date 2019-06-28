@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { View, Button, Text, Image } from "react-native";
+import { View, Button, Text, TouchableOpacity } from "react-native";
 
 import api from "../../service/api";
 
@@ -15,7 +15,6 @@ export default class Users extends Component {
   componentDidMount = async id => {
     if (!this._isMounted) {
       this.getLendingsNumber(id);
-      this.getUser(id);
       this._isMounted = true;
     }
   };
@@ -24,20 +23,15 @@ export default class Users extends Component {
     this.setState({ countLendingsUser: res.data });
   };
 
-  getUser = async id => {
-    const res = await api.get(`/users/${id}`);
-    this.setState({ dataUser: res.data });
-  };
-
   componentWillUnmount() {
     this._isMounted = false;
   }
 
   render() {
     const { navigation } = this.props;
-    const id = navigation.getParam("id", "NO-NAME");
-    this.componentDidMount(id);
-    const { countLendingsUser, dataUser } = this.state;
+    const dataUser = navigation.getParam("dataUser", "NO-NAME");
+    this.componentDidMount(dataUser.id);
+    const { countLendingsUser } = this.state;
     return (
       <View
         style={{
@@ -48,18 +42,26 @@ export default class Users extends Component {
         }}
       >
         <View style={{ backgroundColor: "#ddd", margin: 20 }}>
-          <View style={{ margin: 20, alignItems: "center" }}>
-            <Text style={{ fontSize: 24, textTransform: "capitalize" }}>
-              Nome:
-              {dataUser.name}
-            </Text>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.navigate("Lendings", {
+                dataUser: dataUser
+              })
+            }
+          >
             <View style={{ margin: 20, alignItems: "center" }}>
               <Text style={{ fontSize: 24, textTransform: "capitalize" }}>
-                emprestimos em aberto:
-                {countLendingsUser.count}
+                Nome:
+                {dataUser.name}
               </Text>
+              <View style={{ margin: 20, alignItems: "center" }}>
+                <Text style={{ fontSize: 24, textTransform: "capitalize" }}>
+                  emprestimos em aberto:
+                  {countLendingsUser.count}
+                </Text>
+              </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
         <Button
           style={{ margin: 20 }}

@@ -53,7 +53,7 @@ export default class Home extends Component {
                 key={user.id}
                 onPress={() =>
                   this.props.navigation.navigate("user", {
-                    id: user.id
+                    dataUser: user
                   })
                 }
               >

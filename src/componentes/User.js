@@ -2,17 +2,32 @@ import React, { Component } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-export default function User({ nome, tipo }) {
-  return (
-    <View style={styles.conteiner}>
-      <View style={styles.viewTexto}>
-        <Text style={styles.textNome}>Nome: {nome}</Text>
+export default function User({ nome, tipo, consultaCompleta }) {
+  if (consultaCompleta) {
+    return (
+      <View style={styles.conteiner}>
+        <View style={styles.viewTexto}>
+          <Text style={styles.textNome}>Nome: {nome}</Text>
 
-        <Text style={styles.textTipo}>Tipo de Usuario: {tipo}</Text>
+          <Text style={styles.textTipo}>Tipo de Usuario: {tipo}</Text>
+        
+        </View>
+        <Icon style={styles.icons} name="angle-right" size={20} />
       </View>
-      <Icon style={styles.icons} name="angle-right" size={20} />
-    </View>
-  );
+    );
+  }
+  if (!consultaCompleta) {
+    return (
+      <View style={styles.conteiner}>
+        <View style={styles.viewTexto}>
+          <Text style={styles.textNome}>Nome: {nome}</Text>
+
+          <Text style={styles.textTipo}>Tipo de Usuario: {tipo}</Text>
+        </View>
+        <Icon style={styles.icons} name="angle-right" size={20} />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
