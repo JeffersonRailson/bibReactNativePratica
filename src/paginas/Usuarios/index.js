@@ -1,34 +1,71 @@
 import React, { Component } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import api from "../../service/api";
-import Lendings from "../../componentes/User";
 
-export default class LendingsMain extends Component {
+import { View, Button, Text, Image } from "react-native";
+
+import api from "../../service/api";
+
+export default class Users extends Component {
+  _isMounted = false;
   state = {
-    refreshing: false
+    refreshing: false,
+    countLendingsUser: [],
+    dataUser: []
   };
 
+  componentDidMount = async id => {
+    if (!this._isMounted) {
+      this.getLendingsNumber(id);
+      this.getUser(id);
+      this._isMounted = true;
+    }
+  };
+  getLendingsNumber = async id => {
+    const res = await api.get(`/lendings/count/${id}`);
+    this.setState({ countLendingsUser: res.data });
+  };
+
+  getUser = async id => {
+    const res = await api.get(`/users/${id}`);
+    this.setState({ dataUser: res.data });
+  };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   render() {
-    const { navigation, user } = this.props;
-    const nome = navigation.getParam("name", "NO-NAME");
-    const idade = navigation.getParam("idade", "NO-AGE");
-    const sexo = navigation.getParam("sexo", "NO-SEX");
-    const endereco = navigation.getParam("endereco", "NO-ADDRESS");
-    const cidade = navigation.getParam("cidade", "NO-CITY");
-    const uf = navigation.getParam("uf", "NO-UF");
-    const image = navigation.getParam("image", "");
+    const { navigation } = this.props;
+    const id = navigation.getParam("id", "NO-NAME");
+    this.componentDidMount(id);
+    const { countLendingsUser, dataUser } = this.state;
     return (
-      <View style={{ flex: 1 }}>
-        <ScrollView>
-          {dadosUsers.map(dados => (
-            <TouchableOpacity key={dados.id} onPress={() => alert("blz")}>
-              <Lendings
-                nome={dados.name}
-                tipo={dados.type === 1 ? "Leitor" : "Funcionario"}
-              />
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "red",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <View style={{ backgroundColor: "#ddd", margin: 20 }}>
+          <View style={{ margin: 20, alignItems: "center" }}>
+            <Text style={{ fontSize: 24, textTransform: "capitalize" }}>
+              Nome:
+              {dataUser.name}
+            </Text>
+            <View style={{ margin: 20, alignItems: "center" }}>
+              <Text style={{ fontSize: 24, textTransform: "capitalize" }}>
+                emprestimos em aberto:
+                {countLendingsUser.count}
+              </Text>
+            </View>
+          </View>
+        </View>
+        <Button
+          style={{ margin: 20 }}
+          title="Voltar"
+          onPress={() => this.props.navigation.navigate("Main")}
+        />
       </View>
     );
   }

@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 // import { Container } from './styles';
 
-export default function Lendings({ nome, tipo }) {
+export default function Lending({ nome, tipo }) {
   return (
     <View style={styles.conteiner}>
       <View>

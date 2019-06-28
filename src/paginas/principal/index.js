@@ -21,7 +21,7 @@ export default class Home extends Component {
   };
 
   search = async search => {
-    const res = await api.get(`/${search}/${this.state.search}`);
+    const res = await api.get(`/${search}/q/${this.state.search}`);
     this.setState({ data: res.data });
     this.setState({ search: "" });
     this.setState({ teste: true });
@@ -47,14 +47,23 @@ export default class Home extends Component {
           <Text style={styles.searchButtonText}>Buscar</Text>
         </TouchableOpacity>
         <View style={styles.component}>
-          <TouchableOpacity>
-            {teste && (
-              <User
-                nome={data.name}
-                tipo={data.type ? "Leitor" : "funcionario"}
-              />
-            )}
-          </TouchableOpacity>
+          {teste &&
+            data.map(user => (
+              <TouchableOpacity
+                key={user.id}
+                onPress={() =>
+                  this.props.navigation.navigate("user", {
+                    id: user.id
+                  })
+                }
+              >
+                <User
+                  key={user.id}
+                  nome={user.name}
+                  tipo={user.type ? "Leitor" : "funcionario"}
+                />
+              </TouchableOpacity>
+            ))}
         </View>
       </View>
     );

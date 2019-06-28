@@ -5,7 +5,6 @@ import Lendings from "../../componentes/User";
 
 export default class LendingsMain extends Component {
   state = {
-    dadosUsers: [],
     dadosLendings: []
   };
 
@@ -13,29 +12,16 @@ export default class LendingsMain extends Component {
     this.getLendings();
     this.getUsers();
   };
-  getLendings = async () => {
-    const res = await api.get("/lendings");
+  getLendings = async id => {
+    const res = await api.get(`/lendings/${id}`);
     this.setState({ dadosLendings: res.data });
   };
-
-  getUsers = async () => {
-    const res = await api.get("/users");
-    this.setState({ dadosUsers: res.data });
-  };
-
   render() {
-    const { dadosUsers } = this.state;
+    const { dadosLendings } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
-          {dadosUsers.map(dados => (
-            <TouchableOpacity key={dados.id} onPress={() => alert("blz")}>
-              <Lendings
-                nome={dados.name}
-                tipo={dados.type === 1 ? "Leitor" : "Funcionario"}
-              />
-            </TouchableOpacity>
-          ))}
+ 
         </ScrollView>
       </View>
     );

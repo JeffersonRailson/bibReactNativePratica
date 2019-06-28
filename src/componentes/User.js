@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-export default function Users({ nome, tipo }) {
+export default function User({ nome, tipo }) {
   return (
     <View style={styles.conteiner}>
       <View style={styles.viewTexto}>
