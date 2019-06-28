@@ -2,15 +2,39 @@ import React, { Component } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-export default function User({ nome, tipo, consultaCompleta }) {
+export default function User({
+  nome,
+  tipo,
+  consultaCompleta,
+  email,
+  tel,
+  endereco
+}) {
   if (consultaCompleta) {
     return (
       <View style={styles.conteiner}>
-        <View style={styles.viewTexto}>
-          <Text style={styles.textNome}>Nome: {nome}</Text>
+        <View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Nome: </Text>
+            <Text style={styles.textNome}>{nome}</Text>
+          </View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Tipo: </Text>
+            <Text style={styles.textNome}>{tipo}</Text>
+          </View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textTipo}>Email: </Text>
+            <Text style={styles.textTipo}>{email}</Text>
+          </View>
 
-          <Text style={styles.textTipo}>Tipo de Usuario: {tipo}</Text>
-        
+          <View style={styles.viewTexto}>
+            <Text style={styles.textTipo}>Telefone: </Text>
+            <Text style={styles.textTipo}>{tel}</Text>
+          </View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textTipo}>Endereço: </Text>
+            <Text style={styles.textTipo}>{endereco}</Text>
+          </View>
         </View>
         <Icon style={styles.icons} name="angle-right" size={20} />
       </View>
@@ -19,10 +43,15 @@ export default function User({ nome, tipo, consultaCompleta }) {
   if (!consultaCompleta) {
     return (
       <View style={styles.conteiner}>
-        <View style={styles.viewTexto}>
-          <Text style={styles.textNome}>Nome: {nome}</Text>
-
-          <Text style={styles.textTipo}>Tipo de Usuario: {tipo}</Text>
+        <View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Nome: </Text>
+            <Text style={styles.textNome}>{nome}</Text>
+          </View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Tipo: </Text>
+            <Text style={styles.textNome}>{tipo}</Text>
+          </View>
         </View>
         <Icon style={styles.icons} name="angle-right" size={20} />
       </View>
@@ -40,12 +69,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: "row"
   },
-
   viewTexto: {
-    marginLeft: 10,
+    flex: 1,
+    alignItems: "center",
     backgroundColor: "#ddd",
-    alignItems: "baseline",
-    flex: 1
+    margin: 20,
+    borderRadius: 10,
+    flexDirection: "row"
   },
 
   textNome: {
@@ -53,7 +83,7 @@ const styles = StyleSheet.create({
     textAlign: "left"
   },
 
-  textTipo: {
+  textEmail: {
     fontSize: 15,
     textAlign: "left"
   },
