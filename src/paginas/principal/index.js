@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
-  Image
+  Image,
+  FlatList
 } from "react-native";
 import api from "../../service/api";
 import User from "../../componentes/User";
@@ -47,23 +48,26 @@ export default class Home extends Component {
           <Text style={styles.searchButtonText}>Buscar</Text>
         </TouchableOpacity>
         <View style={styles.component}>
-          {teste &&
-            data.map(user => (
-              <TouchableOpacity
-                key={user.id}
-                onPress={() =>
-                  this.props.navigation.navigate("user", {
-                    dataUser: user
-                  })
-                }
-              >
-                <User
-                  key={user.id}
-                  nome={user.name}
-                  tipo={user.type ? "Leitor" : "funcionario"}
-                />
-              </TouchableOpacity>
-            ))}
+          {teste && (
+            <FlatList
+              data={data}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate("user", {
+                      dataUser: item
+                    })
+                  }
+                >
+                  <User
+                    nome={item.name}
+                    tipo={item.type ? "Leitor" : "funcionario"}
+                  />
+                </TouchableOpacity>
+              )}
+              keyExtractor={item => item.name}
+            />
+          )}
         </View>
       </View>
     );
@@ -106,7 +110,6 @@ const styles = StyleSheet.create({
   component: {
     marginTop: 50,
     flex: 1,
-    backgroundColor: "white",
     borderRadius: 10
   }
 });

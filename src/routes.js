@@ -8,8 +8,8 @@ const Routes = createAppContainer(
   createSwitchNavigator({
     Main,
     books,
-    Lendings,
-    user
+    user,
+    Lendings
   })
 );
 export default Routes;

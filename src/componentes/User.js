@@ -16,7 +16,14 @@ export default function User({
         <View>
           <View style={styles.viewTexto}>
             <Text style={styles.textNome}>Nome: </Text>
-            <Text style={styles.textNome}>{nome}</Text>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 200
+              }}
+            >
+              <Text style={styles.textNome}>{nome}</Text>
+            </View>
           </View>
           <View style={styles.viewTexto}>
             <Text style={styles.textNome}>Tipo: </Text>
@@ -24,7 +31,7 @@ export default function User({
           </View>
           <View style={styles.viewTexto}>
             <Text style={styles.textTipo}>Email: </Text>
-            <Text style={styles.textTipo}>{email}</Text>
+            <Text style={styles.textEmail}>{email}</Text>
           </View>
 
           <View style={styles.viewTexto}>
@@ -46,14 +53,21 @@ export default function User({
         <View>
           <View style={styles.viewTexto}>
             <Text style={styles.textNome}>Nome: </Text>
-            <Text style={styles.textNome}>{nome}</Text>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 200
+              }}
+            >
+              <Text style={styles.textNome}>{nome}</Text>
+            </View>
           </View>
           <View style={styles.viewTexto}>
             <Text style={styles.textNome}>Tipo: </Text>
             <Text style={styles.textNome}>{tipo}</Text>
           </View>
         </View>
-        <Icon style={styles.icons} name="angle-right" size={20} />
+        <Icon style={styles.icons} name="angle-right" size={50} />
       </View>
     );
   }
@@ -69,9 +83,24 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: "row"
   },
+
   viewTexto: {
     flex: 1,
-    alignItems: "center",
+    backgroundColor: "#ddd",
+    margin: 20,
+    borderRadius: 10,
+    flexDirection: "row"
+  },
+
+  viewName: {
+    flex: 1,
+    backgroundColor: "#ddd",
+    margin: 20,
+    borderRadius: 10,
+    flexDirection: "row"
+  },
+  viewType: {
+    flex: 1,
     backgroundColor: "#ddd",
     margin: 20,
     borderRadius: 10,
@@ -79,16 +108,14 @@ const styles = StyleSheet.create({
   },
 
   textNome: {
-    fontSize: 15,
-    textAlign: "left"
+    fontSize: 15
   },
 
   textEmail: {
-    fontSize: 15,
-    textAlign: "left"
+    fontSize: 15
   },
 
   icons: {
-    marginRight: 20
+    marginRight: 10
   }
 });

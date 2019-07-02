@@ -6,7 +6,7 @@ import User from "./User";
 
 // import { Container } from './styles';
 
-export default function Lending({ título, disponibilidade, autor, assusnto }) {
+export default function Book({ título, disponibilidade, autor, assusnto }) {
   return (
     <View style={styles.conteiner}>
       <View>
