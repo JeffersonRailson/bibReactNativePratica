@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  FlatList
+} from "react-native";
 import api from "../../service/api";
 import Lendings from "../../componentes/Lendings";
 
@@ -16,15 +22,15 @@ export default class LendingsMain extends Component {
     if (!this._isMounted) {
       this.setState({ dadosUser: dataUser });
       this.getLendingsCount(dataUser.id);
-
+      this.getLendings();
       this._isMounted = true;
     }
   };
   componentWillUnmount() {
     this._isMounted = false;
   }
-  getLendings = async () => {
-    const res = await api.get(`/lendings/${this.dadosUser.id}`);
+  getLendings = async id => {
+    const res = await api.get(`/lendings/${id}`);
     this.setState({ dadosLendings: res.data });
   };
 
@@ -37,10 +43,29 @@ export default class LendingsMain extends Component {
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
-          <Lendings
-            DataEntrega={dadosUser.name}
-            Exemplar={dadosLendings.count}
-          />
+          <Lendings count={dadosLendings.count} />
+
+          <View>
+            <FlatList
+              data={[
+                {
+                  titulo: dadosUser.name,
+                  dataEmprestimo: "Hoje",
+                  devolocao: "Amanhã",
+                  status: "Data prevista para devolução"
+                }
+              ]}
+              renderItem={({ item }) => (
+                <Lendings
+                  titulo={item.titulo}
+                  dataEmprestimo={item.dataEmprestimo}
+                  devolocao={item.devolocao}
+                  status={item.status}
+                />
+              )}
+              keyExtractor={item => item.titulo}
+            />
+          </View>
         </ScrollView>
       </View>
     );

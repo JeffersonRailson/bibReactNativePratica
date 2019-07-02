@@ -53,6 +53,7 @@ export default class Home extends Component {
           data={[{ key: user.id },{ name: user.name }, { type: user.type }]}
           renderItem={({ item }) => (
               <TouchableOpacity
+              
                 key={item.key}
                 onPress={() =>
                   this.props.navigation.navigate("user", {

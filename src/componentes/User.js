@@ -15,21 +15,6 @@ export default function User({
       <View style={styles.conteiner}>
         <View>
           <View style={styles.viewTexto}>
-            <Text style={styles.textNome}>Nome: </Text>
-            <View
-              style={{
-                justifyContent: "center",
-                width: 200
-              }}
-            >
-              <Text style={styles.textNome}>{nome}</Text>
-            </View>
-          </View>
-          <View style={styles.viewTexto}>
-            <Text style={styles.textNome}>Tipo: </Text>
-            <Text style={styles.textNome}>{tipo}</Text>
-          </View>
-          <View style={styles.viewTexto}>
             <Text style={styles.textTipo}>Email: </Text>
             <Text style={styles.textEmail}>{email}</Text>
           </View>
@@ -40,10 +25,16 @@ export default function User({
           </View>
           <View style={styles.viewTexto}>
             <Text style={styles.textTipo}>Endereço: </Text>
-            <Text style={styles.textTipo}>{endereco}</Text>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 200
+              }}
+            >
+              <Text style={styles.textNome}>{endereco}</Text>
+            </View>
           </View>
         </View>
-        <Icon style={styles.icons} name="angle-right" size={20} />
       </View>
     );
   }

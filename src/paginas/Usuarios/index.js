@@ -1,20 +1,34 @@
 import React, { Component } from "react";
 
-import { View, Button, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+  FlatList,
+  StyleSheet
+} from "react-native";
 
 import api from "../../service/api";
+
+import User from "../../componentes/User";
 
 export default class Users extends Component {
   _isMounted = false;
   state = {
     refreshing: false,
     countLendingsUser: [],
-    dataUser: []
+    getDataUser: [],
+    dataUserValue: []
   };
 
-  componentDidMount = async id => {
+  componentDidMount = async => {
+    const { navigation } = this.props;
+    const dataUser = navigation.getParam("dataUser", "NO-NAME");
     if (!this._isMounted) {
-      this.getLendingsNumber(id);
+      this.setState({ getDataUser: dataUser });
+      this.getLendingsNumber(dataUser.id);
+      this.getValueUser(dataUser.id);
       this._isMounted = true;
     }
   };
@@ -23,52 +37,109 @@ export default class Users extends Component {
     this.setState({ countLendingsUser: res.data });
   };
 
+  getValueUser = async id => {
+    const res = await api.get(`/user/values/${id}`);
+    const [
+      dataNascimento,
+      ,
+      endereco,
+      ,
+      enderecoComplemento,
+      telTrabalho,
+      enderecoEstado,
+      ,
+      cpf,
+      enderecoNumero,
+      enderecoCidade,
+      telCasa,
+      telCell,
+      ,
+      cep,
+      email
+    ] = res.data;
+    const dataUserValueObj = {
+      dataNascimento,
+      endereco,
+      enderecoComplemento,
+      telTrabalho,
+      enderecoEstado,
+      cpf,
+      enderecoNumero,
+      enderecoCidade,
+      telCasa,
+      telCell,
+      cep,
+      email
+    };
+    this.setState({ dataUserValue: dataUserValueObj });
+  };
+
   componentWillUnmount() {
     this._isMounted = false;
   }
 
   render() {
-    const { navigation } = this.props;
-    const dataUser = navigation.getParam("dataUser", "NO-NAME");
-    this.componentDidMount(dataUser.id);
-    const { countLendingsUser } = this.state;
+    const { countLendingsUser, getDataUser, dataUserValue } = this.state;
     return (
-      <View
+      <ScrollView
         style={{
-          flex: 1,
-          backgroundColor: "red",
-          justifyContent: "center",
-          alignItems: "center"
+          flex: 1
         }}
       >
         <View style={{ backgroundColor: "#ddd", margin: 20 }}>
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate("Lendings", {
-                dataUser: dataUser
-              })
-            }
-          >
-            <View style={{ margin: 20, alignItems: "center" }}>
-              <Text style={{ fontSize: 24, textTransform: "capitalize" }}>
-                Nome:
-                {dataUser.name}
-              </Text>
-              <View style={{ margin: 20, alignItems: "center" }}>
-                <Text style={{ fontSize: 24, textTransform: "capitalize" }}>
-                  emprestimos em aberto:
-                  {countLendingsUser.count}
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+          <View>
+            <Text style={{ fontSize: 20 }}>{getDataUser.name}</Text>
+          </View>
+          <View style={{ margin: 20, alignItems: "center" }}>
+            <FlatList
+              data={[dataUserValue]}
+              renderItem={({ item }) => (
+                <User
+                  consultaCompleta={true}
+                  tel={item.telCell}
+                  endereco={item.endereco}
+                  email={item.email}
+                />
+              )}
+              keyExtractor={item => item.dataNascimento}
+            />
+          </View>
         </View>
-        <Button
-          style={{ margin: 20 }}
-          title="Voltar"
+
+        <TouchableOpacity
+          style={styles.searchButton}
+          onPress={() =>
+            this.props.navigation.navigate("Lendings", {
+              dataUser: getDataUser
+            })
+          }
+        >
+          <Text style={styles.searchButtonText}>Emprestimos</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.searchButton}
           onPress={() => this.props.navigation.navigate("Main")}
-        />
-      </View>
+        >
+          <Text style={styles.searchButtonText}>Voltar</Text>
+        </TouchableOpacity>
+      </ScrollView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  searchButton: {
+    backgroundColor: "#00FF7F",
+    borderRadius: 4,
+    height: 42,
+    margin: 20,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  searchButtonText: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#FFF"
+  }
+});

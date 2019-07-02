@@ -6,17 +6,49 @@ import User from "./User";
 
 // import { Container } from './styles';
 
-export default function Lending({ Exemplar, DataEntrega, DataPrevistaEntrega }) {
-  return (
-    <View style={styles.conteiner}>
-      <View>
-        <Text style={styles.textNome}>{Exemplar}</Text>
-        <Text style={styles.textNome}>{DataEntrega}</Text>
-        <Text style={styles.textNome}>{DataPrevistaEntrega}</Text>
+export default function Lending({
+  titulo,
+  dataEmprestimo,
+  devolocao,
+  status,
+  count
+}) {
+  if (count) {
+    return (
+      <View style={styles.conteiner}>
+        <View>
+          <Text>{count}</Text>
+        </View>
       </View>
-      <Icon style={styles.icons} name="angle-right" size={20} />
-    </View>
-  );
+    );
+  }
+  if (!count) {
+    return (
+      <View style={styles.conteiner}>
+        <View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Titulo: </Text>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 200
+              }}
+            >
+              <Text style={styles.textNome}>{titulo}</Text>
+            </View>
+          </View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Data do empréstimo: </Text>
+            <Text style={styles.textNome}>{dataEmprestimo}</Text>
+          </View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>{status}: </Text>
+            <Text style={styles.textNome}>{devolocao}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -31,23 +63,37 @@ const styles = StyleSheet.create({
   },
 
   viewTexto: {
-    marginLeft: 10,
+    flex: 1,
     backgroundColor: "#ddd",
-    alignItems: "baseline",
-    flex: 1
+    margin: 20,
+    borderRadius: 10,
+    flexDirection: "row"
+  },
+
+  viewName: {
+    flex: 1,
+    backgroundColor: "#ddd",
+    margin: 20,
+    borderRadius: 10,
+    flexDirection: "row"
+  },
+  viewType: {
+    flex: 1,
+    backgroundColor: "#ddd",
+    margin: 20,
+    borderRadius: 10,
+    flexDirection: "row"
   },
 
   textNome: {
-    fontSize: 15,
-    textAlign: "left"
+    fontSize: 15
   },
 
   textEmail: {
-    fontSize: 15,
-    textAlign: "left"
+    fontSize: 15
   },
 
   icons: {
-    marginRight: 20
+    marginRight: 10
   }
 });
