@@ -90,13 +90,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: "row"
   },
-  viewType: {
-    flex: 1,
-    backgroundColor: "#ddd",
-    margin: 20,
-    borderRadius: 10,
-    flexDirection: "row"
-  },
 
   textNome: {
     fontSize: 15

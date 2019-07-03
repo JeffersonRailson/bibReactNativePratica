@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
+
 import User from "./User";
 
 // import { Container } from './styles';
@@ -34,7 +35,7 @@ export default function Book({ título, disponibilidade, autor, assusnto }) {
           <Text style={styles.textNome}>{assusnto}</Text>
         </View>
       </View>
-      <Icon style={styles.icons} name="angle-right" size={40} />
+      <Icon style={styles.icons} name="angle-right" size={40} color="green" />
     </View>
   );
 }

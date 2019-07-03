@@ -10,6 +10,13 @@ import api from "../../service/api";
 import Lendings from "../../componentes/Lendings";
 
 export default class LendingsMain extends Component {
+  static navigationOptions = {
+    title: "Emprestimos",
+    headerStyle: {},
+    headerTitleStyle: {
+      fontWeight: "bold"
+    }
+  };
   _isMounted = false;
   state = {
     dadosUser: [],

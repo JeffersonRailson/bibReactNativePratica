@@ -13,7 +13,14 @@ import api from "../../service/api";
 import Book from "../../componentes/book";
 const logo = require("../../assets/img/ifma.png");
 
-export default class Home extends Component {
+export default class BooksMain extends Component {
+  static navigationOptions = {
+    title: "Buscar Livros",
+    headerStyle: {},
+    headerTitleStyle: {
+      fontWeight: "bold"
+    }
+  };
   state = {
     data: [],
     search: null,
@@ -31,7 +38,6 @@ export default class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image style={{ width: 70, height: 70, margin: 15 }} source={logo} />
         <TextInput
           style={styles.input}
           autoCorrect={false}
@@ -81,7 +87,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   searchButton: {
-    backgroundColor: "#00FF7F",
+    backgroundColor: "green",
     borderRadius: 4,
     height: 42,
     marginTop: 15,
