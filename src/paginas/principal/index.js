@@ -14,25 +14,27 @@ import User from "../../componentes/User";
 const logo = require("../../assets/img/ifma.png");
 
 export default class Home extends Component {
+  static navigationOptions = {
+    Title: "home"
+  };
   state = {
     data: [],
     search: null,
     type: null,
-    teste: false
+    renderFlat: false
   };
 
   search = async search => {
     const res = await api.get(`/${search}/q/${this.state.search}`);
     this.setState({ data: res.data });
     this.setState({ search: "" });
-    this.setState({ teste: true });
+    this.setState({ renderFlat: true });
   };
 
   render() {
-    const { data, teste } = this.state;
+    const { data, renderFlat } = this.state;
     return (
       <View style={styles.container}>
-        <Image style={{ width: 70, height: 70, margin: 15 }} source={logo} />
         <TextInput
           style={styles.input}
           autoCorrect={false}
@@ -48,7 +50,7 @@ export default class Home extends Component {
           <Text style={styles.searchButtonText}>Buscar</Text>
         </TouchableOpacity>
         <View style={styles.component}>
-          {teste && (
+          {renderFlat && (
             <FlatList
               data={data}
               renderItem={({ item }) => (
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   searchButton: {
-    backgroundColor: "#00FF7F",
+    backgroundColor: "green",
     borderRadius: 4,
     height: 42,
     marginTop: 15,

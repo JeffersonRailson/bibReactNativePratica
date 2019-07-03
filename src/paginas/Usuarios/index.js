@@ -27,51 +27,14 @@ export default class Users extends Component {
     const dataUser = navigation.getParam("dataUser", "NO-NAME");
     if (!this._isMounted) {
       this.setState({ getDataUser: dataUser });
-      this.getLendingsNumber(dataUser.id);
       this.getValueUser(dataUser.id);
       this._isMounted = true;
     }
   };
-  getLendingsNumber = async id => {
-    const res = await api.get(`/lendings/count/${id}`);
-    this.setState({ countLendingsUser: res.data });
-  };
 
   getValueUser = async id => {
     const res = await api.get(`/user/values/${id}`);
-    const [
-      dataNascimento,
-      ,
-      endereco,
-      ,
-      enderecoComplemento,
-      telTrabalho,
-      enderecoEstado,
-      ,
-      cpf,
-      enderecoNumero,
-      enderecoCidade,
-      telCasa,
-      telCell,
-      ,
-      cep,
-      email
-    ] = res.data;
-    const dataUserValueObj = {
-      dataNascimento,
-      endereco,
-      enderecoComplemento,
-      telTrabalho,
-      enderecoEstado,
-      cpf,
-      enderecoNumero,
-      enderecoCidade,
-      telCasa,
-      telCell,
-      cep,
-      email
-    };
-    this.setState({ dataUserValue: dataUserValueObj });
+    this.setState({ dataUserValue: res.data });
   };
 
   componentWillUnmount() {
@@ -79,7 +42,7 @@ export default class Users extends Component {
   }
 
   render() {
-    const { countLendingsUser, getDataUser, dataUserValue } = this.state;
+    const { getDataUser, dataUserValue } = this.state;
     return (
       <ScrollView
         style={{
@@ -87,8 +50,16 @@ export default class Users extends Component {
         }}
       >
         <View style={{ backgroundColor: "#ddd", margin: 20 }}>
-          <View>
-            <Text style={{ fontSize: 20 }}>{getDataUser.name}</Text>
+          <View style={{ flexDirection: "row", margin: 10 }}>
+            <Text style={{ fontSize: 20 }}>Nome: </Text>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 200
+              }}
+            >
+              <Text style={{ fontSize: 20 }}>{getDataUser.name}</Text>
+            </View>
           </View>
           <View style={{ margin: 20, alignItems: "center" }}>
             <FlatList
@@ -96,12 +67,12 @@ export default class Users extends Component {
               renderItem={({ item }) => (
                 <User
                   consultaCompleta={true}
-                  tel={item.telCell}
+                  tel={item.telCell == "" && "Arroz"}
                   endereco={item.endereco}
                   email={item.email}
                 />
               )}
-              keyExtractor={item => item.dataNascimento}
+              keyExtractor={item => item.email}
             />
           </View>
         </View>
@@ -130,7 +101,7 @@ export default class Users extends Component {
 
 const styles = StyleSheet.create({
   searchButton: {
-    backgroundColor: "#00FF7F",
+    backgroundColor: "green",
     borderRadius: 4,
     height: 42,
     margin: 20,

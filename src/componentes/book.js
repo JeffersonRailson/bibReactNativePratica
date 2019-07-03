@@ -11,8 +11,15 @@ export default function Book({ título, disponibilidade, autor, assusnto }) {
     <View style={styles.conteiner}>
       <View>
         <View style={styles.viewTexto}>
-          <Text style={styles.textNome}>Titulo:</Text>
-          <Text style={styles.textNome}>{título}</Text>
+          <Text style={styles.textNome}>Titulo: </Text>
+          <View
+            style={{
+              justifyContent: "center",
+              width: 200
+            }}
+          >
+            <Text style={styles.textNome}>{título}</Text>
+          </View>
         </View>
         <View style={styles.viewTexto}>
           <Text style={styles.textNome}>Autor:</Text>
@@ -27,7 +34,7 @@ export default function Book({ título, disponibilidade, autor, assusnto }) {
           <Text style={styles.textNome}>{assusnto}</Text>
         </View>
       </View>
-      <Icon style={styles.icons} name="angle-right" size={20} />
+      <Icon style={styles.icons} name="angle-right" size={40} />
     </View>
   );
 }

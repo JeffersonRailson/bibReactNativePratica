@@ -58,7 +58,7 @@ export default function User({
             <Text style={styles.textNome}>{tipo}</Text>
           </View>
         </View>
-        <Icon style={styles.icons} name="angle-right" size={50} />
+        <Icon style={styles.icons} name="angle-right" size={40} />
       </View>
     );
   }

@@ -18,14 +18,14 @@ export default class Home extends Component {
     data: [],
     search: null,
     type: null,
-    teste: false
+    renderFlat: false
   };
 
   search = async search => {
     const res = await api.get(`/${search}/q/${this.state.search}`);
     this.setState({ data: res.data });
     this.setState({ search: "" });
-    this.setState({ teste: true });
+    this.setState({ renderFlat: true });
   };
 
   render() {
@@ -47,6 +47,7 @@ export default class Home extends Component {
           <Text style={styles.searchButtonText}>Buscar</Text>
         </TouchableOpacity>
         <FlatList
+          style={{ marginTop: 10 }}
           data={[{ key: "a" }, { key: "b" }]}
           renderItem={({ item }) => (
             <Book
@@ -57,8 +58,7 @@ export default class Home extends Component {
           )}
         />
         <View style={styles.component}>
-          <TouchableOpacity>
-          </TouchableOpacity>
+          <TouchableOpacity />
         </View>
       </View>
     );

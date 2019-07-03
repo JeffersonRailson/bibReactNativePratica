@@ -13,7 +13,8 @@ export default class LendingsMain extends Component {
   _isMounted = false;
   state = {
     dadosUser: [],
-    dadosLendings: []
+    dadosLendata: [],
+    dataCountLendings: []
   };
 
   componentDidMount = async () => {
@@ -22,7 +23,7 @@ export default class LendingsMain extends Component {
     if (!this._isMounted) {
       this.setState({ dadosUser: dataUser });
       this.getLendingsCount(dataUser.id);
-      this.getLendings();
+      this.getLendings(dataUser.id);
       this._isMounted = true;
     }
   };
@@ -31,20 +32,21 @@ export default class LendingsMain extends Component {
   }
   getLendings = async id => {
     const res = await api.get(`/lendings/${id}`);
-    this.setState({ dadosLendings: res.data });
+    this.setState({ dataLendings: res.data });
   };
 
   getLendingsCount = async id => {
     const res = await api.get(`/lendings/count/${id}`);
-    this.setState({ dadosLendings: res.data });
+    this.setState({ dataCountLendings: res.data });
   };
   render() {
-    const { dadosLendings, dadosUser } = this.state;
+    const { dataCountLendings, dadosUser } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
-          <Lendings count={dadosLendings.count} />
-
+          <View>
+            <Lendings count={dataCountLendings.count} />
+          </View>
           <View>
             <FlatList
               data={[

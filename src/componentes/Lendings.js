@@ -16,8 +16,11 @@ export default function Lending({
   if (count) {
     return (
       <View style={styles.conteiner}>
+        <Text style={{ fontSize: 20, marginLeft: 20 }}>
+          Emprestimos em aberto:
+        </Text>
         <View>
-          <Text>{count}</Text>
+          <Text style={{ fontSize: 20, margin: 20 }}>{count}</Text>
         </View>
       </View>
     );
