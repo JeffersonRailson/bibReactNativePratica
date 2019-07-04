@@ -74,8 +74,7 @@ const MainStack = createStackNavigator(
         />
       ),
       headerTitleStyle: {
-        fontWeight: "bold",
-        marginLeft: 130
+        fontWeight: "bold"
       }
     })
   }

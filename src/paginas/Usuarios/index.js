@@ -24,8 +24,8 @@ export default class UserSearch extends Component {
     renderFlat: false
   };
 
-  search = async search => {
-    const res = await api.get(`/${search}/q/${this.state.search}`);
+  search = async () => {
+    const res = await api.get(`/users/q/${this.state.search}`);
     this.setState({ data: res.data });
     this.setState({ search: "" });
     this.setState({ renderFlat: true });
@@ -45,7 +45,7 @@ export default class UserSearch extends Component {
         />
         <TouchableOpacity
           style={styles.searchButton}
-          onPress={() => this.search("users")}
+          onPress={() => this.search()}
         >
           <Text style={styles.searchButtonText}>Buscar</Text>
         </TouchableOpacity>
