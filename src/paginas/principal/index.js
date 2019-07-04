@@ -4,11 +4,7 @@ import { View, StyleSheet, Text } from "react-native";
 
 export default class Main extends Component {
   static navigationOptions = {
-    title: "Inicio",
-    headerStyle: {},
-    headerTitleStyle: {
-      fontWeight: "bold"
-    }
+    title: "Inicio"
   };
 
   render() {

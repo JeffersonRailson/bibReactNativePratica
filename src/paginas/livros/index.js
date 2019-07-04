@@ -6,20 +6,16 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
-  Image,
   FlatList
 } from "react-native";
 import api from "../../service/api";
 import Book from "../../componentes/book";
 const logo = require("../../assets/img/ifma.png");
 
-export default class BooksMain extends Component {
+export default class BooksSearch extends Component {
   static navigationOptions = {
     title: "Buscar Livros",
-    headerStyle: {},
-    headerTitleStyle: {
-      fontWeight: "bold"
-    }
+    headerStyle: {}
   };
   state = {
     data: [],

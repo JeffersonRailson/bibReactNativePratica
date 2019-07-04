@@ -6,23 +6,16 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
-  Image,
   FlatList
 } from "react-native";
 import api from "../../service/api";
 import User from "../../componentes/User";
 const logo = require("../../assets/img/logo.png");
 
-export default class Home extends Component {
+export default class UserSearch extends Component {
   static navigationOptions = {
     title: "Buscar Usuário",
-    drawerIcon: ({ focused, tintColor }) => (
-      <Image style={{ width: 50, height: 50 }} source={logo} />
-    ),
-    headerStyle: {},
-    headerTitleStyle: {
-      fontWeight: "bold"
-    }
+    headerStyle: {}
   };
   state = {
     data: [],

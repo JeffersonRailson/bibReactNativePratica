@@ -14,6 +14,7 @@ import api from "../../service/api";
 import User from "../../componentes/User";
 
 export default class UserPage extends Component {
+  _isMounted = false;
   static navigationOptions = {
     title: "Dados do Usuario",
     headerStyle: {},
@@ -21,7 +22,6 @@ export default class UserPage extends Component {
       fontWeight: "bold"
     }
   };
-  _isMounted = false;
   state = {
     refreshing: false,
     countLendingsUser: [],

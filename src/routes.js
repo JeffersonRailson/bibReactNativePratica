@@ -6,13 +6,13 @@ import {
   createAppContainer,
   DrawerActions
 } from "react-navigation";
-import ButtonMenu from "./config/MenuGaveta/botao";
+import ButtonMenu from "./componentes/MenuGaveta/botao";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 
 import Lendings from "./paginas/emprestimos";
 import UserSearch from "./paginas/Usuarios";
-import UserScreen from "./paginas/Usuarios/uservalue";
+import UserScreen from "./paginas/Usuarios/userValue";
 import BooksSearch from "./paginas/livros";
 import Main from "./paginas/principal";
 
@@ -20,7 +20,8 @@ const UserStack = createStackNavigator(
   {
     UserSearch,
     UserScreen,
-    Lendings
+    Lendings,
+    Main
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -30,14 +31,18 @@ const UserStack = createStackNavigator(
             navigation.dispatch(DrawerActions.toggleDrawer())
           }
         />
-      )
+      ),
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
     })
   }
 );
 
 const BookStack = createStackNavigator(
   {
-    BooksSearch
+    BooksSearch,
+    Main
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -47,7 +52,10 @@ const BookStack = createStackNavigator(
             navigation.dispatch(DrawerActions.toggleDrawer())
           }
         />
-      )
+      ),
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
     })
   }
 );
@@ -64,14 +72,23 @@ const MainStack = createStackNavigator(
             navigation.dispatch(DrawerActions.toggleDrawer())
           }
         />
-      )
+      ),
+      headerTitleStyle: {
+        fontWeight: "bold",
+        marginLeft: 130
+      }
     })
   }
 );
 
 const BibDrawer = createDrawerNavigator(
   {
-    Inicio: MainStack,
+    Inicio: {
+      screen: MainStack,
+      navigationOptions: {
+        drawerLabel: "Inicio"
+      }
+    },
 
     Usuario: {
       screen: UserStack,
@@ -100,6 +117,7 @@ const BibDrawer = createDrawerNavigator(
       }
     },
     style: {
+      flex: 1,
       margin: 10
     }
   }

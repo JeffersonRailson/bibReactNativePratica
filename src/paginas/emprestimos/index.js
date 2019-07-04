@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {
   ScrollView,
   Text,
-  TouchableOpacity,
   View,
   FlatList
 } from "react-native";
@@ -10,14 +9,11 @@ import api from "../../service/api";
 import Lendings from "../../componentes/Lendings";
 
 export default class LendingsMain extends Component {
+  _isMounted = false;
   static navigationOptions = {
     title: "Emprestimos",
-    headerStyle: {},
-    headerTitleStyle: {
-      fontWeight: "bold"
-    }
+    headerStyle: {}
   };
-  _isMounted = false;
   state = {
     dadosUser: [],
     dadosLendata: [],
