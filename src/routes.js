@@ -10,17 +10,19 @@ import ButtonMenu from "./componentes/MenuGaveta/botao";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import Lendings from "./paginas/emprestimos";
-import UserSearch from "./paginas/Usuarios";
-import UserScreen from "./paginas/Usuarios/userValue";
-import BooksSearch from "./paginas/livros";
+import LendingsPage from "./paginas/emprestimos";
+import UserSearchPage from "./paginas/Usuarios";
+import UserValuePage from "./paginas/Usuarios/userValue";
+import BookPage from "./paginas/livros";
 import Main from "./paginas/principal";
+import ReservationSearch from "./paginas/reservas/";
+import ReservationPage from "./paginas/reservas/reservationValue";
 
-const UserStack = createStackNavigator(
+const LendingsStack = createStackNavigator(
   {
-    UserSearch,
-    UserScreen,
-    Lendings,
+    UserSearchPage,
+    UserValuePage,
+    LendingsPage,
     Main
   },
   {
@@ -39,9 +41,10 @@ const UserStack = createStackNavigator(
   }
 );
 
-const BookStack = createStackNavigator(
+const ReservationStack = createStackNavigator(
   {
-    BooksSearch,
+    ReservationSearch,
+    ReservationPage,
     Main
   },
   {
@@ -62,7 +65,8 @@ const BookStack = createStackNavigator(
 
 const MainStack = createStackNavigator(
   {
-    Main
+    Main,
+    BookPage
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -85,23 +89,26 @@ const BibDrawer = createDrawerNavigator(
     Inicio: {
       screen: MainStack,
       navigationOptions: {
-        drawerLabel: "Inicio"
+        drawerLabel: "Inicio",
+        drawerIcon: ({ focused, tintColor }) => (
+          <Icon name="book" size={28} color="black" />
+        )
       }
     },
 
-    Usuario: {
-      screen: UserStack,
+    Emprestimos: {
+      screen: LendingsStack,
       navigationOptions: {
-        drawerLabel: "Usuarios",
+        drawerLabel: "Emprestimos",
         drawerIcon: ({ focused, tintColor }) => (
           <Icon name="user" size={28} color="black" />
         )
       }
     },
-    Livros: {
-      screen: BookStack,
+    Reservas: {
+      screen: ReservationStack,
       navigationOptions: {
-        drawerLabel: "Livros",
+        drawerLabel: "Reservas",
         drawerIcon: ({ focused, tintColor }) => (
           <Icon name="book" size={28} color="black" />
         )

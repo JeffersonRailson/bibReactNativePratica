@@ -2,91 +2,91 @@ import React, { Component } from "react";
 
 import {
   View,
-  StyleSheet,
   TouchableOpacity,
   Text,
-  TextInput,
-  FlatList
+  ScrollView,
+  FlatList,
+  StyleSheet
 } from "react-native";
-import api from "../../service/api";
-import Book from "../../componentes/book";
-const logo = require("../../assets/img/ifma.png");
 
-export default class BooksSearch extends Component {
+import api from "../../service/api";
+
+import Book from "../../componentes/book";
+
+export default class BookPage extends Component {
+  _isMounted = false;
   static navigationOptions = {
-    title: "Buscar Livros",
-    headerStyle: {}
+    title: "Livro",
+    headerStyle: {},
+    headerTitleStyle: {
+      fontWeight: "bold"
+    }
   };
   state = {
-    data: [],
-    search: null,
-    type: null,
-    renderFlat: false
+    refreshing: false,
+    getDataBook: []
   };
 
-  search = async search => {
-    const res = await api.get(`/${search}/q/${this.state.search}`);
-    this.setState({ data: res.data });
-    this.setState({ search: "" });
-    this.setState({ renderFlat: true });
+  componentDidMount = async => {
+    const { navigation } = this.props;
+    const dataBook = navigation.getParam("dataBook", "NO-NAME");
+    if (!this._isMounted) {
+      this.setState({ getDataBook: dataBook });
+      this._isMounted = true;
+    }
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
+    const { getDataBook } = this.state;
     return (
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          autoCorrect={false}
-          autoCapitalize="none"
-          placeholder="Digite os termos da Pesquisa"
-          placeholderTextColor="#999"
-          onChangeText={description => this.setState({ search: description })}
-        />
-        <TouchableOpacity
-          style={styles.searchButton}
-          onPress={() => this.search("users")}
-        >
-          <Text style={styles.searchButtonText}>Buscar</Text>
-        </TouchableOpacity>
-        <FlatList
-          style={{ marginTop: 10 }}
-          data={[{ key: "a" }, { key: "b" }]}
-          renderItem={({ item }) => (
-            <Book
-              título={item.key}
-              disponibilidade={item.key}
-              autor={item.key}
+      <ScrollView
+        style={{
+          flex: 1
+        }}
+      >
+        <View style={{ backgroundColor: "#ddd", margin: 20 }}>
+          <View style={{ flexDirection: "row", margin: 10 }}>
+            <Text style={{ fontSize: 20 }}>Titulo: </Text>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 200
+              }}
+            >
+              <Text style={{ fontSize: 20 }}>{getDataBook.titulo}</Text>
+            </View>
+          </View>
+          <View style={{ margin: 20, alignItems: "center" }}>
+            <FlatList
+              data={[getDataBook]}
+              renderItem={({ item }) => (
+                <Book
+                  autor={item.autores}
+                  publicacao={item.publicacao}
+                  isbn={item.isbn}
+                  assusnto={item.assunto}
+                  tipoConsulta={true}
+                />
+              )}
+              keyExtractor={item => item.email}
             />
-          )}
-        />
-        <View style={styles.component}>
-          <TouchableOpacity />
+          </View>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F8F8FF",
-    paddingHorizontal: 20,
-    paddingTop: 30
-  },
-  input: {
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    padding: 15,
-    marginTop: 10,
-    fontSize: 16
-  },
   searchButton: {
     backgroundColor: "green",
     borderRadius: 4,
     height: 42,
-    marginTop: 15,
+    margin: 20,
     justifyContent: "center",
     alignItems: "center"
   },
@@ -94,16 +94,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     color: "#FFF"
-  },
-  logo: {
-    height: 128,
-    width: 138,
-    resizeMode: "center"
-  },
-  component: {
-    marginTop: 50,
-    flex: 1,
-    backgroundColor: "white",
-    borderRadius: 10
   }
 });

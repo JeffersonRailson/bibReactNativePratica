@@ -6,15 +6,51 @@ import User from "./user";
 
 // import { Container } from './styles';
 
-export default function Book({
+export default function Reservation({
   tipoConsulta,
-  titulo,
-  isbn,
-  autor,
-  assusnto,
-  publicacao
+  nome,
+  matricula,
+  tipoUsuario,
+  dataReserva,
+  expira
 }) {
   if (!tipoConsulta) {
+    return (
+      <View style={styles.conteiner}>
+        <View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Nome: </Text>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 200
+              }}
+            >
+              <Text style={styles.textNome}>{nome}</Text>
+            </View>
+          </View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Matricula: 0000</Text>
+            <Text style={styles.textNome}>{matricula}</Text>
+          </View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Tipo usuario: </Text>
+            <Text style={styles.textNome}>{tipoUsuario}</Text>
+          </View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Matricula: </Text>
+            <Text style={styles.textNome}>{dataReserva}</Text>
+          </View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Assusnto: </Text>
+            <Text style={styles.textNome}>{expira}</Text>
+          </View>
+        </View>
+        <Icon style={styles.icons} name="angle-right" size={40} color="black" />
+      </View>
+    );
+  }
+  if (tipoConsulta) {
     return (
       <View style={styles.conteiner}>
         <View>
@@ -37,23 +73,6 @@ export default function Book({
             <Text style={styles.textNome}>Assusnto: </Text>
             <Text style={styles.textNome}>{assusnto}</Text>
           </View>
-        </View>
-        <Icon style={styles.icons} name="angle-right" size={40} color="black" />
-      </View>
-    );
-  }
-  if (tipoConsulta) {
-    return (
-      <View style={styles.conteiner}>
-        <View>
-          <View style={styles.viewTexto}>
-            <Text style={styles.textNome}>Autor: </Text>
-            <Text style={styles.textNome}>{autor}</Text>
-          </View>
-          <View style={styles.viewTexto}>
-            <Text style={styles.textNome}>Assusnto: </Text>
-            <Text style={styles.textNome}>{assusnto}</Text>
-          </View>
           <View style={styles.viewTexto}>
             <Text style={styles.textNome}>Publicação: </Text>
             <Text style={styles.textNome}>{publicacao}</Text>
@@ -64,6 +83,7 @@ export default function Book({
             <Text style={styles.textNome}>{isbn}</Text>
           </View>
         </View>
+        <Icon style={styles.icons} name="angle-right" size={40} color="black" />
       </View>
     );
   }

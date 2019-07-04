@@ -11,12 +11,12 @@ import {
 
 import api from "../../service/api";
 
-import User from "../../componentes/user";
+import Reservation from "../../componentes/reservation";
 
-export default class UserPage extends Component {
+export default class ReservationPage extends Component {
   _isMounted = false;
   static navigationOptions = {
-    title: "Dados do Usuario",
+    title: "Reservas",
     headerStyle: {},
     headerTitleStyle: {
       fontWeight: "bold"
@@ -24,9 +24,9 @@ export default class UserPage extends Component {
   };
   state = {
     refreshing: false,
-    countLendingsUser: [],
     getDataUser: [],
-    dataUserValue: []
+    dataReservation: [],
+    renderFlat: false
   };
 
   componentDidMount = async => {
@@ -34,14 +34,21 @@ export default class UserPage extends Component {
     const dataUser = navigation.getParam("dataUser", "NO-NAME");
     if (!this._isMounted) {
       this.setState({ getDataUser: dataUser });
-      this.getValueUser(dataUser.id);
       this._isMounted = true;
+      renderFlat: false;
     }
   };
 
-  getValueUser = async id => {
-    const res = await api.get(`/user/values/${id}`);
-    this.setState({ dataUserValue: res.data });
+  getReservation = async () => {
+    const { getDataUser } = this.state;
+    const res = await api.get(`/reservations/user/${getDataUser.id}`);
+    this.setState({ dataReservation: res.data });
+  };
+
+  getValueBook = async () => {
+    const { getDataUser } = this.state;
+    const res = await api.get(`/book/`);
+    this.setState({ dataReservation: res.data });
   };
 
   componentWillUnmount() {
@@ -49,7 +56,7 @@ export default class UserPage extends Component {
   }
 
   render() {
-    const { getDataUser, dataUserValue } = this.state;
+    const { getDataUser, renderFlat } = this.state;
     return (
       <ScrollView
         style={{
@@ -67,40 +74,33 @@ export default class UserPage extends Component {
             >
               <Text style={{ fontSize: 20 }}>{getDataUser.name}</Text>
             </View>
-          </View>
-          <View style={{ margin: 20, alignItems: "center" }}>
-            <FlatList
-              data={[dataUserValue]}
-              renderItem={({ item }) => (
-                <User
-                  consultaCompleta={true}
-                  tel={item.telCell}
-                  endereco={item.endereco}
-                  email={item.email}
+            <View>
+              {renderFlat && (
+                <FlatList
+                  data={data}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity
+                      onPress={() =>
+                        this.props.navigation.navigate("BookPage", {
+                          dataBook: item
+                        })
+                      }
+                    >
+                      <Book
+                        titulo={item.titulo}
+                        autor={item.autores}
+                        assusnto={item.assunto}
+                        publicacao={item.publicacao}
+                        isbn={item.isbn}
+                      />
+                    </TouchableOpacity>
+                  )}
+                  keyExtractor={item => item.titulo}
                 />
               )}
-              keyExtractor={item => item.email}
-            />
+            </View>
           </View>
         </View>
-
-        <TouchableOpacity
-          style={styles.searchButton}
-          onPress={() =>
-            this.props.navigation.navigate("LendingsPage", {
-              dataUser: getDataUser
-            })
-          }
-        >
-          <Text style={styles.searchButtonText}>Emprestimos</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.searchButton}
-          onPress={() => this.props.navigation.navigate("UserSearch")}
-        >
-          <Text style={styles.searchButtonText}>Voltar</Text>
-        </TouchableOpacity>
       </ScrollView>
     );
   }

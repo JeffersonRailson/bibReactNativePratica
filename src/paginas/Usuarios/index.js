@@ -9,7 +9,7 @@ import {
   FlatList
 } from "react-native";
 import api from "../../service/api";
-import User from "../../componentes/User";
+import User from "../../componentes/user";
 const logo = require("../../assets/img/logo.png");
 
 export default class UserSearch extends Component {
@@ -56,7 +56,7 @@ export default class UserSearch extends Component {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() =>
-                    this.props.navigation.navigate("UserScreen", {
+                    this.props.navigation.navigate("UserValuePage", {
                       dataUser: item
                     })
                   }

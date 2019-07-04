@@ -13,7 +13,7 @@ import api from "../../service/api";
 import Book from "../../componentes/book";
 const logo = require("../../assets/img/ifma.png");
 
-export default class BooksSearch extends Component {
+export default class Main extends Component {
   static navigationOptions = {
     title: "Inicio - Buscar Livro",
     headerStyle: {}
@@ -25,8 +25,9 @@ export default class BooksSearch extends Component {
     renderFlat: false
   };
 
-  componentDidMount = async () => {
-    const res = await api.get(`/book/assunto/his`);
+  searchBook = async () => {
+    const { typeSearch, search } = this.state;
+    const res = await api.get(`/book/${typeSearch}/${search}`);
     this.setState({ data: res.data });
     this.setState({ search: "" });
     this.setState({ renderFlat: true });
@@ -36,10 +37,6 @@ export default class BooksSearch extends Component {
     const { search, typeSearch, renderFlat, data } = this.state;
     return (
       <View style={styles.container}>
-        <Text style={{ fontSize: 50 }}>
-          {typeSearch}
-          {search}
-        </Text>
         <Picker
           selectedValue={this.state.typeSearch}
           onValueChange={item => this.setState({ typeSearch: item })}
@@ -62,7 +59,31 @@ export default class BooksSearch extends Component {
         >
           <Text style={styles.searchButtonText}>Buscar</Text>
         </TouchableOpacity>
-        <View style={styles.component} />
+        <View style={styles.component}>
+          {renderFlat && (
+            <FlatList
+              data={data}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate("BookPage", {
+                      dataBook: item
+                    })
+                  }
+                >
+                  <Book
+                    titulo={item.titulo}
+                    autor={item.autores}
+                    assusnto={item.assunto}
+                    publicacao={item.publicacao}
+                    isbn={item.isbn}
+                  />
+                </TouchableOpacity>
+              )}
+              keyExtractor={item => item.titulo}
+            />
+          )}
+        </View>
       </View>
     );
   }

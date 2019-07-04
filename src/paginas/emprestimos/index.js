@@ -1,12 +1,7 @@
 import React, { Component } from "react";
-import {
-  ScrollView,
-  Text,
-  View,
-  FlatList
-} from "react-native";
+import { ScrollView, Text, View, FlatList } from "react-native";
 import api from "../../service/api";
-import Lendings from "../../componentes/Lendings";
+import Lendings from "../../componentes/lendings";
 
 export default class LendingsMain extends Component {
   _isMounted = false;

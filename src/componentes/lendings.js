@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import User from "./User";
+import User from "./user";
 
 // import { Container } from './styles';
 
