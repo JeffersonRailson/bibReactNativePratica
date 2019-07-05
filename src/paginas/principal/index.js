@@ -36,7 +36,7 @@ export default class Main extends Component {
   };
 
   render() {
-    const { search, typeSearch, renderFlat, data } = this.state;
+    const { typeSearch, data } = this.state;
     return (
       <View style={styles.container}>
         <Picker
@@ -50,7 +50,7 @@ export default class Main extends Component {
           style={styles.input}
           autoCorrect={false}
           autoCapitalize="none"
-          placeholder="Digite os termos da Pesquisa"
+          placeholder={`Busca por ` + typeSearch}
           placeholderTextColor="#999"
           onChangeText={description => this.setState({ search: description })}
         />

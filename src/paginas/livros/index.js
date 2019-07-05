@@ -9,7 +9,6 @@ import {
   StyleSheet
 } from "react-native";
 
-import api from "../../service/api";
 
 import Book from "../../componentes/book";
 

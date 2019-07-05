@@ -94,7 +94,7 @@ const BibDrawer = createDrawerNavigator(
       navigationOptions: {
         drawerLabel: "Inicio",
         drawerIcon: ({ focused, tintColor }) => (
-          <Icon name="book" size={28} color="black" />
+          <Icon name="home" size={28} color="black" />
         )
       }
     },

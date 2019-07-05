@@ -77,7 +77,7 @@ export default class ReservationPage extends Component {
   }
 
   render() {
-    const { getDataUser, dataReservation, dataBook, renderNull } = this.state;
+    const { getDataUser, dataBook, renderNull } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.componentReservationUser}>
