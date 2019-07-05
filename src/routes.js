@@ -10,9 +10,9 @@ import ButtonMenu from "./componentes/MenuGaveta/botao";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import LendingsPage from "./paginas/emprestimos";
-import UserSearchPage from "./paginas/Usuarios";
-import UserValuePage from "./paginas/Usuarios/userValue";
+import LendingsPage from "./paginas/emprestimos/LendingsValue";
+import LendingsSearchPage from "./paginas/emprestimos";
+import UserPage from "./paginas/Usuarios";
 import BookPage from "./paginas/livros";
 import Main from "./paginas/principal";
 import ReservationSearch from "./paginas/reservas/";
@@ -20,10 +20,11 @@ import ReservationPage from "./paginas/reservas/reservationValue";
 
 const LendingsStack = createStackNavigator(
   {
-    UserSearchPage,
-    UserValuePage,
+    LendingsSearchPage,
     LendingsPage,
-    Main
+    UserPage,
+    Main,
+    BookPage
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -45,7 +46,9 @@ const ReservationStack = createStackNavigator(
   {
     ReservationSearch,
     ReservationPage,
-    Main
+    UserPage,
+    Main,
+    BookPage
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -124,7 +127,7 @@ const BibDrawer = createDrawerNavigator(
     },
     style: {
       flex: 1,
-      margin: 10
+      padding: 20
     }
   }
 );

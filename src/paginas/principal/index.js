@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import api from "../../service/api";
 import Book from "../../componentes/book";
-const logo = require("../../assets/img/ifma.png");
 
 export default class Main extends Component {
   static navigationOptions = {
@@ -21,16 +20,19 @@ export default class Main extends Component {
   state = {
     data: [],
     search: null,
-    typeSearch: "",
+    typeSearch: "assunto",
     renderFlat: false
   };
 
   searchBook = async () => {
     const { typeSearch, search } = this.state;
     const res = await api.get(`/book/${typeSearch}/${search}`);
+
     this.setState({ data: res.data });
-    this.setState({ search: "" });
-    this.setState({ renderFlat: true });
+    if (this.state.data[0]) {
+      this.setState({ search: "" });
+      this.setState({ renderFlat: true });
+    }
   };
 
   render() {
@@ -41,7 +43,6 @@ export default class Main extends Component {
           selectedValue={this.state.typeSearch}
           onValueChange={item => this.setState({ typeSearch: item })}
         >
-          <Picker.item label="" />
           <Picker.item label="Buscar por assunto" value="assunto" />
           <Picker.item label="Buscar por titulo" value="titulo" />
         </Picker>
@@ -60,7 +61,7 @@ export default class Main extends Component {
           <Text style={styles.searchButtonText}>Buscar</Text>
         </TouchableOpacity>
         <View style={styles.component}>
-          {renderFlat && (
+          {data[0] && (
             <FlatList
               data={data}
               renderItem={({ item }) => (

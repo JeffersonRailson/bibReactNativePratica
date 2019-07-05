@@ -7,29 +7,54 @@ import User from "./user";
 // import { Container } from './styles';
 
 export default function Lending({
+  nome,
+  matricula,
+  tipoUsuario,
   titulo,
+  autor,
+  publicacao,
   dataEmprestimo,
+  isbn,
   devolocao,
-  status,
-  count
+  tipoConsulta,
+  emprestimosCount
 }) {
-  if (count) {
+  if (tipoConsulta === "user") {
     return (
-      <View style={styles.conteiner}>
-        <Text style={{ fontSize: 20, marginLeft: 20 }}>
-          Emprestimos em aberto:
-        </Text>
+      <View style={styles.conteiner1}>
         <View>
-          <Text style={{ fontSize: 20, margin: 20 }}>{count}</Text>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Nome: </Text>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 200
+              }}
+            >
+              <Text style={styles.textNome}>{nome}</Text>
+            </View>
+          </View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Matricula: 0000</Text>
+            <Text style={styles.textNome}>{matricula}</Text>
+          </View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Tipo usuario: </Text>
+            <Text style={styles.textNome}>{tipoUsuario}</Text>
+          </View>
+          <View style={styles.viewTexto}>
+            <Text style={styles.textNome}>Emprestimos em aberto: </Text>
+            <Text style={styles.textNome}>{emprestimosCount}</Text>
+          </View>
         </View>
       </View>
     );
   }
-  if (!count) {
+  if (tipoConsulta === "book") {
     return (
-      <View style={styles.conteiner}>
+      <View style={styles.conteiner2}>
         <View>
-          <View style={styles.viewTexto}>
+          <View style={styles.viewTexto2}>
             <Text style={styles.textNome}>Titulo: </Text>
             <View
               style={{
@@ -40,13 +65,40 @@ export default function Lending({
               <Text style={styles.textNome}>{titulo}</Text>
             </View>
           </View>
-          <View style={styles.viewTexto}>
-            <Text style={styles.textNome}>Data do empréstimo: </Text>
-            <Text style={styles.textNome}>{dataEmprestimo}</Text>
+          <View style={styles.viewTexto2}>
+            <Text style={styles.textNome}>Autor: </Text>
+            <Text style={styles.textNome}>{autor}</Text>
           </View>
-          <View style={styles.viewTexto}>
-            <Text style={styles.textNome}>{status}: </Text>
-            <Text style={styles.textNome}>{devolocao}</Text>
+          <View style={styles.viewTexto2}>
+            <Text style={styles.textNome}>Ano de publicacao: </Text>
+            <Text style={styles.textNome}>{publicacao}</Text>
+          </View>
+
+          <View style={styles.viewTexto2}>
+            <Text style={styles.textNome}>ISBN: </Text>
+            <Text style={styles.textNome}>{isbn}</Text>
+          </View>
+          <View style={styles.viewTexto2}>
+            <Text style={styles.textNome}>Data prevista para devolução: </Text>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 100
+              }}
+            >
+              <Text style={styles.textNome}>{devolocao}</Text>
+            </View>
+          </View>
+          <View style={styles.viewTexto2}>
+            <Text style={styles.textNome}>Data do empréstimo: </Text>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 100
+              }}
+            >
+              <Text style={styles.textNome}>{dataEmprestimo}</Text>
+            </View>
           </View>
         </View>
       </View>
@@ -55,9 +107,33 @@ export default function Lending({
 }
 
 const styles = StyleSheet.create({
-  conteiner: {
+  conteiner1: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderRadius: 10,
+    backgroundColor: "#ddd",
+    height: 150
+  },
+  conteiner2: {
     flex: 1,
     justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#ddd",
+    margin: 20,
+    borderRadius: 10
+  },
+
+  viewTexto: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#ddd",
+    margin: 5,
+    borderRadius: 10,
+    flexDirection: "row"
+  },
+
+  viewTexto2: {
+    flex: 1,
     alignItems: "center",
     backgroundColor: "#ddd",
     margin: 20,
@@ -65,38 +141,17 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
 
-  viewTexto: {
-    flex: 1,
-    backgroundColor: "#ddd",
-    margin: 20,
-    borderRadius: 10,
-    flexDirection: "row"
-  },
-
-  viewName: {
-    flex: 1,
-    backgroundColor: "#ddd",
-    margin: 20,
-    borderRadius: 10,
-    flexDirection: "row"
-  },
-  viewType: {
-    flex: 1,
-    backgroundColor: "#ddd",
-    margin: 20,
-    borderRadius: 10,
-    flexDirection: "row"
-  },
-
   textNome: {
-    fontSize: 15
+    fontSize: 15,
+    textAlign: "left"
   },
 
   textEmail: {
-    fontSize: 15
+    fontSize: 15,
+    textAlign: "left"
   },
 
   icons: {
-    marginRight: 10
+    marginRight: 20
   }
 });

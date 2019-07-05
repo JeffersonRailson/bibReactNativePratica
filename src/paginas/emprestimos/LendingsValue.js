@@ -1,83 +1,78 @@
 import React, { Component } from "react";
-
 import {
-  View,
-  Text,
   ScrollView,
   TouchableOpacity,
+  Text,
+  View,
   FlatList,
   StyleSheet
 } from "react-native";
-
-import { parseISO, format, formatRelative, formatDistance } from "date-fns";
-
 import api from "../../service/api";
+import Lendings from "../../componentes/lendings";
 
-import Reservation from "../../componentes/reservation";
-
-export default class ReservationPage extends Component {
+export default class LendingsMain extends Component {
   _isMounted = false;
   static navigationOptions = {
-    title: "Reservas do usuario",
-    headerStyle: {},
-    headerTitleStyle: {
-      fontWeight: "bold"
-    }
+    title: "Emprestimos do usuario",
+    headerStyle: {}
   };
   state = {
-    refreshing: false,
     getDataUser: [],
-    dataReservation: [],
+    dataLendata: [],
+    dataCountLendings: [],
     dataBook: [],
     renderNull: false
   };
 
-  teste = {
-    teste: ""
-  };
-
-  componentDidMount = async => {
+  componentDidMount = async () => {
     const { navigation } = this.props;
     const dataUser = navigation.getParam("dataUser", "NO-NAME");
     if (!this._isMounted) {
       this.setState({ getDataUser: dataUser });
-      this.getReservation(dataUser.id);
+      this.getLendingsCount(dataUser.id);
+      this.getLendings(dataUser.id);
       this.getBookValue(dataUser.id);
-
       this._isMounted = true;
     }
   };
 
-  getReservation = async record_id => {
-    const res = await api.get(`/reservations/user/${record_id}`);
-    this.setState({ dataReservation: res.data });
+  componentDidUpdate() {
+    this.componentDidMount();
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+  getLendings = async id => {
+    const res = await api.get(`/lendings/${id}`);
+    this.setState({ dataLendings: res.data });
   };
 
-  getBookValue = async idUser => {
-    const res = await api.get(`/reservations/user/book/${idUser}`);
+  getLendingsCount = async id => {
+    const res = await api.get(`/lendings/count/${id}`);
+    this.setState({ dataCountLendings: res.data });
+  };
+
+  getBookValue = async id => {
+    const res = await api.get(`/lending/user/book/${id}`);
     this.setState({ dataBook: res.data });
     if (this.state.dataBook[0]) {
       this.setState({ renderNull: true });
     }
   };
 
-  getDateReservation = idBook => {
+  getDateReservation = (idBook, id) => {
     const { dataReservation } = this.state;
     let retorno = "";
     dataReservation.map(item => {
-      if (item.record_id === idBook) {
+      if (item.record_id === idBook && item.id === id) {
         retorno = item;
       }
     });
     return retorno;
   };
 
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
   render() {
-    const { getDataUser, dataReservation, dataBook, renderNull } = this.state;
+    const { dataCountLendings, getDataUser, dataBook, renderNull } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.componentReservationUser}>
@@ -89,11 +84,12 @@ export default class ReservationPage extends Component {
               })
             }
           >
-            <Reservation
+            <Lendings
               tipoConsulta="user"
               nome={getDataUser.name}
               matricula={getDataUser.id}
               tipoUsuario={getDataUser.type == 1 ? "Leitor" : "funcionario"}
+              emprestimosCount={dataCountLendings.count}
             />
           </TouchableOpacity>
         </View>
@@ -109,27 +105,18 @@ export default class ReservationPage extends Component {
                     })
                   }
                 >
-                  <Reservation
+                  <Lendings
                     tipoConsulta="book"
                     titulo={item.titulo}
                     autor={item.autores}
                     publicacao={item.publicacao}
                     isbn={item.isbn}
-                    expira={
-                      this.getDateReservation(item.id).created ||
-                      "não encontrada"
-                    }
-                    dataReserva={
-                      this.getDateReservation(item.id).expires ||
-                      "não encontrada"
-                    }
                   />
                 </TouchableOpacity>
               )}
               keyExtractor={item => item.titulo}
             />
           )}
-
           {!renderNull && (
             <Text style={{ fontSize: 50, textAlign: "center" }}>
               Sem reservas aquivadas

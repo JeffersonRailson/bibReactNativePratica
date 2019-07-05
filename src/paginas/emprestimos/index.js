@@ -1,73 +1,117 @@
 import React, { Component } from "react";
-import { ScrollView, Text, View, FlatList } from "react-native";
-import api from "../../service/api";
-import Lendings from "../../componentes/lendings";
 
-export default class LendingsMain extends Component {
-  _isMounted = false;
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  TextInput,
+  FlatList
+} from "react-native";
+import api from "../../service/api";
+import User from "../../componentes/user";
+const logo = require("../../assets/img/logo.png");
+
+export default class LendingsSearch extends Component {
   static navigationOptions = {
     title: "Emprestimos",
     headerStyle: {}
   };
   state = {
-    dadosUser: [],
-    dadosLendata: [],
-    dataCountLendings: []
+    data: [],
+    search: null,
+    type: null,
+    renderFlat: false
   };
 
-  componentDidMount = async () => {
-    const { navigation } = this.props;
-    const dataUser = navigation.getParam("dataUser", "NO-NAME");
-    if (!this._isMounted) {
-      this.setState({ dadosUser: dataUser });
-      this.getLendingsCount(dataUser.id);
-      this.getLendings(dataUser.id);
-      this._isMounted = true;
-    }
-  };
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-  getLendings = async id => {
-    const res = await api.get(`/lendings/${id}`);
-    this.setState({ dataLendings: res.data });
+  search = async () => {
+    const res = await api.get(`/users/q/${this.state.search}`);
+    this.setState({ data: res.data });
+    this.setState({ search: "" });
+    this.setState({ renderFlat: true });
   };
 
-  getLendingsCount = async id => {
-    const res = await api.get(`/lendings/count/${id}`);
-    this.setState({ dataCountLendings: res.data });
-  };
   render() {
-    const { dataCountLendings, dadosUser } = this.state;
+    const { data, renderFlat } = this.state;
     return (
-      <View style={{ flex: 1 }}>
-        <ScrollView>
-          <View>
-            <Lendings count={dataCountLendings.count} />
-          </View>
-          <View>
+      <View style={styles.container}>
+        <TextInput
+          style={styles.input}
+          autoCorrect={false}
+          autoCapitalize="none"
+          placeholder="Informe o usuário para proseguir!!"
+          placeholderTextColor="#999"
+          onChangeText={description => this.setState({ search: description })}
+        />
+        <TouchableOpacity
+          style={styles.searchButton}
+          onPress={() => this.search()}
+        >
+          <Text style={styles.searchButtonText}>Buscar</Text>
+        </TouchableOpacity>
+        <View style={styles.component}>
+          {renderFlat && (
             <FlatList
-              data={[
-                {
-                  titulo: dadosUser.name,
-                  dataEmprestimo: "Hoje",
-                  devolocao: "Amanhã",
-                  status: "Data prevista para devolução"
-                }
-              ]}
+              data={data}
               renderItem={({ item }) => (
-                <Lendings
-                  titulo={item.titulo}
-                  dataEmprestimo={item.dataEmprestimo}
-                  devolocao={item.devolocao}
-                  status={item.status}
-                />
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate("LendingsPage", {
+                      dataUser: item
+                    })
+                  }
+                >
+                  <User
+                    nome={item.name}
+                    tipo={item.type == 1 ? "Leitor" : "funcionario"}
+                  />
+                </TouchableOpacity>
               )}
-              keyExtractor={item => item.titulo}
+              keyExtractor={item => item.name}
             />
-          </View>
-        </ScrollView>
+          )}
+        </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F8F8FF",
+    paddingHorizontal: 20,
+    paddingTop: 30
+  },
+  input: {
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    padding: 15,
+    marginTop: 10,
+    fontSize: 16
+  },
+  searchButton: {
+    backgroundColor: "green",
+    borderRadius: 4,
+    height: 42,
+    marginTop: 15,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  searchButtonText: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#FFF"
+  },
+  logo: {
+    height: 128,
+    width: 138,
+    resizeMode: "center"
+  },
+  component: {
+    marginTop: 50,
+    flex: 1,
+    borderRadius: 10
+  }
+});

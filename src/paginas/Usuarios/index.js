@@ -2,100 +2,120 @@ import React, { Component } from "react";
 
 import {
   View,
-  StyleSheet,
   TouchableOpacity,
   Text,
-  TextInput,
-  FlatList
+  ScrollView,
+  FlatList,
+  StyleSheet
 } from "react-native";
-import api from "../../service/api";
-import User from "../../componentes/user";
-const logo = require("../../assets/img/logo.png");
 
-export default class UserSearch extends Component {
+import api from "../../service/api";
+
+import User from "../../componentes/user";
+
+export default class UserPage extends Component {
+  _isMounted = false;
   static navigationOptions = {
-    title: "Buscar Usuário",
-    headerStyle: {}
+    title: "Usuario",
+    headerStyle: {},
+    headerTitleStyle: {
+      fontWeight: "bold"
+    }
   };
   state = {
-    data: [],
-    search: null,
-    type: null,
-    renderFlat: false
+    refreshing: false,
+    countLendingsUser: [],
+    getDataUser: [],
+    dataUserValue: []
   };
 
-  search = async () => {
-    const res = await api.get(`/users/q/${this.state.search}`);
-    this.setState({ data: res.data });
-    this.setState({ search: "" });
-    this.setState({ renderFlat: true });
+  componentDidMount = async => {
+    const { navigation } = this.props;
+    const dataUser = navigation.getParam("dataUser", "NO-NAME");
+    if (!this._isMounted) {
+      this.setState({ getDataUser: dataUser });
+      this.getValueUser(dataUser.id);
+      this._isMounted = true;
+    }
   };
+
+  getValueUser = async id => {
+    const res = await api.get(`/user/values/${id}`);
+    this.setState({ dataUserValue: res.data });
+  };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
-    const { data, renderFlat } = this.state;
+    const { getDataUser, dataUserValue } = this.state;
     return (
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          autoCorrect={false}
-          autoCapitalize="none"
-          placeholder="Digite os termos da Pesquisa"
-          placeholderTextColor="#999"
-          onChangeText={description => this.setState({ search: description })}
-        />
+      <ScrollView
+        style={{
+          flex: 1
+        }}
+      >
+        <View style={{ backgroundColor: "#ddd", margin: 20 }}>
+          <View style={{ flexDirection: "row", margin: 10 }}>
+            <Text style={{ fontSize: 20 }}>Nome: </Text>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 200
+              }}
+            >
+              <Text style={{ fontSize: 20 }}>{getDataUser.name}</Text>
+            </View>
+          </View>
+          <View style={{ margin: 20, alignItems: "center" }}>
+            <FlatList
+              data={[dataUserValue]}
+              renderItem={({ item }) => (
+                <User
+                  consultaCompleta={true}
+                  tel={item.telCell}
+                  endereco={item.endereco}
+                  email={item.email}
+                />
+              )}
+              keyExtractor={item => item.email}
+            />
+          </View>
+        </View>
+
         <TouchableOpacity
           style={styles.searchButton}
-          onPress={() => this.search()}
+          onPress={() =>
+            this.props.navigation.navigate("LendingsPage", {
+              dataUser: getDataUser
+            })
+          }
         >
-          <Text style={styles.searchButtonText}>Buscar</Text>
+          <Text style={styles.searchButtonText}>Emprestimos</Text>
         </TouchableOpacity>
-        <View style={styles.component}>
-          {renderFlat && (
-            <FlatList
-              data={data}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("UserValuePage", {
-                      dataUser: item
-                    })
-                  }
-                >
-                  <User
-                    nome={item.name}
-                    tipo={item.type ? "Leitor" : "funcionario"}
-                  />
-                </TouchableOpacity>
-              )}
-              keyExtractor={item => item.name}
-            />
-          )}
-        </View>
-      </View>
+
+        <TouchableOpacity
+          style={styles.searchButton}
+          onPress={() =>
+            this.props.navigation.navigate("ReservationPage", {
+              dataUser: getDataUser
+            })
+          }
+        >
+          <Text style={styles.searchButtonText}>Reservas</Text>
+        </TouchableOpacity>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F8F8FF",
-    paddingHorizontal: 20,
-    paddingTop: 30
-  },
-  input: {
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    padding: 15,
-    marginTop: 10,
-    fontSize: 16
-  },
   searchButton: {
     backgroundColor: "green",
     borderRadius: 4,
     height: 42,
-    marginTop: 15,
+    margin: 20,
     justifyContent: "center",
     alignItems: "center"
   },
@@ -103,15 +123,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     color: "#FFF"
-  },
-  logo: {
-    height: 128,
-    width: 138,
-    resizeMode: "center"
-  },
-  component: {
-    marginTop: 50,
-    flex: 1,
-    borderRadius: 10
   }
 });

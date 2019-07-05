@@ -31,11 +31,25 @@ export default function Book({
           </View>
           <View style={styles.viewTexto}>
             <Text style={styles.textNome}>Autor: </Text>
-            <Text style={styles.textNome}>{autor}</Text>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 200
+              }}
+            >
+              <Text style={styles.textNome}>{autor}</Text>
+            </View>
           </View>
           <View style={styles.viewTexto}>
             <Text style={styles.textNome}>Assusnto: </Text>
-            <Text style={styles.textNome}>{assusnto}</Text>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 200
+              }}
+            >
+              <Text style={styles.textNome}>{assusnto}</Text>
+            </View>
           </View>
         </View>
         <Icon style={styles.icons} name="angle-right" size={40} color="black" />
