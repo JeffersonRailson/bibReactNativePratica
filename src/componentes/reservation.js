@@ -12,9 +12,11 @@ export default function Reservation({
   matricula,
   tipoUsuario,
   dataReserva,
-  expira
+  expira,
+  autor,
+  publicacao
 }) {
-  if (!tipoConsulta) {
+  if (tipoConsulta === "user") {
     return (
       <View style={styles.conteiner}>
         <View>
@@ -46,11 +48,10 @@ export default function Reservation({
             <Text style={styles.textNome}>{expira}</Text>
           </View>
         </View>
-        <Icon style={styles.icons} name="angle-right" size={40} color="black" />
       </View>
     );
   }
-  if (tipoConsulta) {
+  if (tipoConsulta === "book") {
     return (
       <View style={styles.conteiner}>
         <View>
@@ -70,11 +71,7 @@ export default function Reservation({
             <Text style={styles.textNome}>{autor}</Text>
           </View>
           <View style={styles.viewTexto}>
-            <Text style={styles.textNome}>Assusnto: </Text>
-            <Text style={styles.textNome}>{assusnto}</Text>
-          </View>
-          <View style={styles.viewTexto}>
-            <Text style={styles.textNome}>Publicação: </Text>
+            <Text style={styles.textNome}>Ano de publicacao: </Text>
             <Text style={styles.textNome}>{publicacao}</Text>
           </View>
 
@@ -83,7 +80,6 @@ export default function Reservation({
             <Text style={styles.textNome}>{isbn}</Text>
           </View>
         </View>
-        <Icon style={styles.icons} name="angle-right" size={40} color="black" />
       </View>
     );
   }
